@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Samuel Yvon <samuelyvon9@gmail.com>"]
 readme = "README.md"
-packages = [{ include = "hiss_me_maybe" }]
+packages = [{ include = "hmm" }]
 
 [tool.poetry.dependencies]
 rich = "^13.3.2"
@@ -46,8 +46,3 @@ select = [
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
