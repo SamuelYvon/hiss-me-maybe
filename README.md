@@ -1,4 +1,4 @@
-# hiss-me-maybe
+# 🐍 hiss-me-maybe
 
 Python Version of my `rs-call-me-maybe`. Baby snake version for now, only supports Pushover.
 
