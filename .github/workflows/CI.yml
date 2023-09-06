@@ -1,0 +1,112 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+
+  lint-check:
+    name: Run pre-commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - uses: abatilo/actions-poetry@v2
+      - name: Install and run pre-commit
+        run: poetry install --with dev --no-root && poetry run pre-commit run -a
+
+  linux:
+    name: Build Linux wheels
+    needs: [ lint-check ]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: |
+            3.10
+      - uses: abatilo/actions-poetry@v2
+      - name: Build wheels
+        run: poetry build
+      - name: Upload wheels
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: dist
+
+  linux-musl:
+    name: Build Linux musl wheels
+    needs: [ lint-check ]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [ x86_64 ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: abatilo/actions-poetry@v2
+      - name: Build wheels
+        run: poetry build
+      - name: Upload wheels
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: dist
+
+  windows:
+    name: Build Windows wheels
+    needs: [ lint-check ]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: |
+            3.10
+      - uses: abatilo/actions-poetry@v2
+      - name: Build wheels
+        run: poetry build
+      - name: Upload wheels
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: dist
+
+  macos:
+    name: Build MacOS wheels
+    needs: [ lint-check ]
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: |
+            3.10
+      - uses: abatilo/actions-poetry@v2
+      - name: Build wheels
+        run: poetry build
+      - name: Upload wheels
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: dist
+  
+  release:
+    needs: [ macos, windows, linux ]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: wheels
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}

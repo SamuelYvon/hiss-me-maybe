@@ -1,0 +1,43 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-case-conflict
+      - id: check-ast
+      - id: check-docstring-first
+      - id: check-merge-conflict
+      - id: check-builtin-literals
+      - id: check-yaml
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.12.1
+    hooks:
+      - id: validate-pyproject
+
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff
+        entry: ruff check . --fix
+        pass_filenames: false
+        language: system
+
+  - repo: local
+    hooks:
+      - id: system
+        name: mypy
+        entry: mypy .
+        pass_filenames: false
+        language: system
+
+  - repo: local
+    hooks:
+      - id: system
+        name: black
+        entry: black .
+        pass_filenames: false
+        language: system
