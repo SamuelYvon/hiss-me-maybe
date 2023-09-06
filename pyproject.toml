@@ -11,17 +11,20 @@ rich = "^13.3.2"
 click = "*"
 pydantic = "^1.10"
 python = "^3.8"
+requests = "*"
 
 [tool.poetry.dev-dependencies]
 black = "^23.1.0"
 mypy = "^1.0.0"
+pytest = "*"
+types-requests="*"
 isort = "^5.10.1"
 ruff = "^0.0.254"
 pre-commit = "^3.1.1"
 types-setuptools = "^67.6.0.5"
 
 [tool.poetry.scripts]
-hmm = "hmm.__main__:hmm"
+hmm = "hmm.__main__:_main"
 
 [tool.black]
 target-version = ["py311", "py310", "py39", "py38", "py37"]
