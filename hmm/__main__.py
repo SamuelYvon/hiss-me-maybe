@@ -1,4 +1,2 @@
-
-
-def _main():
+def _main() -> None:
     ...
