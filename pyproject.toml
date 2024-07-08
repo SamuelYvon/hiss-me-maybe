@@ -14,7 +14,7 @@ python = "^3.8"
 requests = "*"
 
 [tool.poetry.dev-dependencies]
-black = "^23.1.0"
+black = "^24.3.0"
 mypy = "^1.0.0"
 pytest = "*"
 types-requests="*"
